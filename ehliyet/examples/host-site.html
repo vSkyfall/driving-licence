@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Örnek hackathon sitesi</title>
+<!-- Bu sayfa, EHLİYET'in BAŞKA bir sitenin içine nasıl gömüldüğünü gösterir (farklı kaynak, CORS). -->
+<style>
+  body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #0E1116; color: #E8EAED; }
+  .top { padding: 18px 24px; border-bottom: 1px solid #2A2F38; display: flex; justify-content: space-between; align-items: center; }
+  .top b { font-size: 20px; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px; display: grid; gap: 24px; }
+  h2 { margin: 0 0 8px; }
+  /* Sitenin kendi rengine uydurma */
+  ehliyet-start, ehliyet-audit, ehliyet-leaderboard { --ehliyet-sign: #F2C230; }
+</style>
+<script src="http://localhost:4747/widget.js" defer></script>
+</head>
+<body>
+  <div class="top"><b>OKX AI Hackathon — Ajan Denetim Masası</b><span>Takımlar: 14 · Denetlenen: canlı</span></div>
+  <main>
+    <section><h2>Ajanını sınava sok</h2><ehliyet-start api="http://localhost:4747" theme="dark" heading=""></ehliyet-start></section>
+    <section><h2>Salon tablosu</h2><ehliyet-leaderboard api="http://localhost:4747" theme="dark"></ehliyet-leaderboard></section>
+  </main>
+</body>
+</html>

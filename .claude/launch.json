@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ehliyet",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "ehliyet", "start"],
+      "port": 4747
+    },
+    {
+      "name": "ehliyet-prova",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "ehliyet", "run", "prova"],
+      "port": 4747
+    }
+  ]
+}

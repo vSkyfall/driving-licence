@@ -1,0 +1,5 @@
+node_modules/
+.env
+data/runs/
+data/atk-tools.json
+.DS_Store

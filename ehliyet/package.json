@@ -1,0 +1,42 @@
+{
+  "name": "ehliyet",
+  "version": "2.0.0",
+  "description": "EHLİYET: OKX Agent Trade Kit kullanan yapay zekâ ajanları için ehliyet sınavı. Denetçi + web sitesi tek serviste.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.19"
+  },
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "prova": "tsx src/server.ts --mock",
+    "test": "tsx test/selftest.ts",
+    "demo-agent": "tsx examples/demo-agent.ts",
+    "bridge": "tsx src/gateway/bridge.ts",
+    "typecheck": "tsc --noEmit -p .",
+    "export": "tsx scripts/export.ts",
+    "avalanche:setup": "tsx scripts/avalanche.ts setup",
+    "avalanche:status": "tsx scripts/avalanche.ts status",
+    "avalanche:compile": "tsx scripts/compile-contract.ts",
+    "test:chain": "tsx test/chain.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "ethers": "^6.15.0",
+    "tsx": "^4.19.0"
+  },
+  "optionalDependencies": {
+    "@okx_ai/okx-trade-mcp": "^1.4.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.28.2",
+    "solc": "^0.8.28",
+    "typescript": "^5.9.3"
+  }
+}

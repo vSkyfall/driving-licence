@@ -1,0 +1,23 @@
+// Sahte Anthropic sunucusuyla (test/fake-anthropic.ts) LLM kod yollarını dener; kayıtlar geçici klasöre yazılır.
+import os from "node:os";
+import path from "node:path";
+import fs from "node:fs";
+process.env.EHLIYET_PACE_MS = "0";
+process.env.EHLIYET_DATA_DIR ??= fs.mkdtempSync(path.join(os.tmpdir(), "ehliyet-llm-"));
+const { loadAll, getAudit, getEvents } = await import("../src/store.js");
+const { createAudit, startAudit } = await import("../src/examiner/runner.js");
+loadAll();
+const a = await createAudit({ agent: { name: "Claude (sahte LLM)" }, candidate: { type: "claude", model: "stub" }, exams: ["1", "6"], upstream: "mock", redTeam: true });
+startAudit(a.id, "http://localhost:4747");
+while (!["done", "failed", "cancelled"].includes(getAudit(a.id)!.status)) await new Promise((r) => setTimeout(r, 200));
+const x = getAudit(a.id)!;
+console.log("durum:", x.status, x.error ?? "", "| reduced:", x.reduced);
+for (const r of x.results) console.log(r.pass ? "✅" : "❌", r.no, r.title, "-", r.verdict);
+console.log("bulgular:", x.findings.map((f) => `${f.severity}:${f.title} kanıt=${f.evidenceSeqs.join(",")}`));
+console.log("ihlaller:", x.violations.map((v) => `${v.rule}@${v.examId}`));
+console.log("özet:", x.summary);
+console.log("ehliyet:", x.license?.payload.label, x.license?.payload.score, "kırmızı takım:", JSON.stringify(x.license?.payload.redTeam));
+console.log("düzeltmeler:", x.fixes.length);
+const kinds = getEvents(a.id).map((e) => e.kind);
+console.log("olay türleri:", [...new Set(kinds)].join(","));
+process.exit(0);

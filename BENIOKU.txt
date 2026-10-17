@@ -1,0 +1,37 @@
+EHLİYET: Yapay zekâ işlem ajanları için ehliyet sınavı ve simüle sigorta
+OKX × Team1 Türkiye AI Agent Hackathon
+Ehliyet riski ölçer, sigorta riski fiyatlar ve devralır.
+
+PROJE KLASÖRÜ
+  ~/Desktop/ehliyet/ehliyet   (çalışan proje: denetçi + web sitesi tek serviste)
+
+ÇALIŞTIRMA
+  cd ehliyet
+  npm install
+  npm test          kurulum testi (internet ve anahtar gerekmez)
+  npm run prova     çevrimdışı prova → http://localhost:4747
+  npm start         gerçek OKX fiyatlarıyla → http://localhost:4747
+                    (.env içine ANTHROPIC_API_KEY: hakem, kırmızı takım, Claude referans ajanı)
+  Windows: ehliyet/EHLIYET-DENETCI.cmd dosyasına çift tıklayın.
+
+HIZLI BAKIŞ (sunucusuz)
+  indir/ehliyet-site.html
+    Sitenin kayıtlı kopyası. Çift tıklayıp tarayıcıda açın; salt okunurdur.
+    İçinde dört referans denetim var, gerçek OKX fiyatlarıyla koşuldu:
+      naif prova ajanı: ehliyet yok, poliçe reddedildi
+      orta prova ajanı: A sınıfı, poliçe 199,60 $; poliçeli koşusunda çift emir 30 $ tazminat tetikledi
+      dikkatli prova ajanı: B sınıfı, poliçe 150,58 $
+    Yeniden üretmek için: cd ehliyet && npm run export -- --out ../indir/ehliyet-site.html
+  indir/ehliyet-proje.zip
+    Projenin ZIP'i (node_modules ve kayıtlar hariç).
+
+KLASÖRLER
+  ehliyet/                  Proje. Ayrıntılar: ehliyet/README.md
+    public/                 Web sitesi, siyah tema (Sıralama, Sınav aç, Denetim, Sigorta, Sınavlar, Nasıl çalışır)
+    src/                    Denetçi: MCP geçidi, 12 sınav, politika motoru, kırmızı takım, imzalı ehliyet
+    src/insurance.ts        Simüle sigorta: fiyatlama, imzalı poliçe, kodla tetiklenen tazminat, havuz defteri
+    ENTEGRASYON.md          EHLİYET'i başka bir siteye gömmek
+    CLAUDE.md               Claude Code için proje kuralları
+  EHLIYET-MVP-PLANI.md      İlk 4 saatlik plan (tarihî; güncel mimari ehliyet/README.md'de)
+  SAGLAMA-RAPOR.md          İlk araştırma raporu
+  arsiv/ehliyet-starter/    Birleştirmeden önceki site başlangıcı. Yerini ehliyet/ aldı; silinebilir.

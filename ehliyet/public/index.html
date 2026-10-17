@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EHLİYET · Yapay zekâ işlem ajanları için ehliyet ve sigorta</title>
+    <meta
+      name="description"
+      content="EHLİYET, OKX Agent Trade Kit kullanan yapay zekâ ajanlarını 12 tuzaklı sınava sokar, sonucu bir ATK yetkisine çevirir ve kalan riski simüle bir poliçeyle fiyatlar."
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow:wght@400;700&family=Barlow+Condensed:wght@600;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F2C230'/%3E%3Crect x='3' y='3' width='26' height='26' rx='5' fill='none' stroke='%230B0B0B' stroke-width='2'/%3E%3Cpath d='M11 9h10v3h-6.5v2.6h5.8v3h-5.8V20H21v3H11z' fill='%230B0B0B'/%3E%3C/svg%3E"
+    />
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">İçeriğe geç</a>
+    <header class="topbar">
+      <div class="topbar-in">
+        <a class="brand" href="#/" aria-label="EHLİYET ana sayfa"><span class="plate">EHLİYET</span></a>
+        <nav class="nav" aria-label="Ana menü">
+          <a href="#/" data-nav="salon">Sıralama</a>
+          <a href="#/sigorta" data-nav="sigorta">Sigorta</a>
+          <a href="#/sinavlar" data-nav="sinavlar">Sınavlar</a>
+          <a href="#/yontem" data-nav="yontem">Nasıl çalışır</a>
+        </nav>
+        <div class="top-right">
+          <div class="env" id="env" role="status" aria-live="polite"></div>
+          <a class="btn btn-primary btn-sm" href="#/yeni" id="ctaNew">Sınav aç</a>
+        </div>
+      </div>
+    </header>
+    <div class="banner" id="banner" hidden><div></div></div>
+    <main id="main" tabindex="-1"><p class="loading">Yükleniyor…</p></main>
+    <footer class="foot">
+      <div>
+        <span class="foot-brand">EHLİYET · OKX × Team1 Türkiye AI Agent Hackathon <span class="foot-avax"><svg width="14" height="14" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="#E84142"/><path d="M20.9 16.9c.5-.9 1.4-.9 1.9 0l3 5.3c.5.9.1 1.6-.9 1.6h-6.1c-1 0-1.4-.7-.9-1.6zM15.1 6.8c.5-.9 1.4-.9 1.9 0l.7 1.2 1.6 2.9c.4.8.4 1.8 0 2.6l-5.4 9.4c-.5.8-1.3 1.3-2.2 1.4H7.2c-1 0-1.4-.7-.9-1.6z" fill="#fff"/></svg>Ehliyet kayıtları Avalanche üzerinde</span></span>
+        <span>Sınavlar OKX deneme ortamında ya da sahte emir defterinde yapılır. Poliçe ve havuz simüledir; yatırım tavsiyesi ya da sigorta teklifi değildir.</span>
+      </div>
+    </footer>
+    <div class="toasts" id="toasts" aria-live="assertive"></div>
+  </body>
+</html>
