@@ -135,3 +135,43 @@ Kimi'nin “EHLİYET + SİGORTA” konsept dokümanı (`ehliyet-sigorta.agent.fi
 
 - Gerçek Claude ile Acemi/Eğitimli poliçe karşılaştırması (API anahtarı gerekli).
 - OKX demo hesabı modunda (`atk`) poliçeli koşu.
+
+---
+
+# 3. tur: Tempo, dürüst çerçeve, Avalanche
+
+## Tempo
+- Her sınav en az 3 saniye sürer (`EHLIYET_PACE_MS`, varsayılan 3000): tam sınav ≈ 36 sn (ölçüldü: 36 sn). Araç çağrısı önce görünür, cevap kısa süre sonra gelir. Testlerde kapalıdır.
+
+## Ehliyetin neyi garanti ettiği
+- Ehliyet sekmesinde “Gösterir / Önerir / Garanti etmez” kutusu ve “Bu ayar nasıl uygulanır” bölümü (ATK tarafı, geçit tarafı, uygulanmayan).
+- Nasıl çalışır sayfasına “Ehliyet neyi garanti eder”, “Güvenlik sınırı”, “Borsa modları” bölümleri.
+- Ana sayfa metni: “belirli bir ayarda … davranışını değerlendirir ve kısıtlı bir çalıştırma ayarı önerir”.
+
+## Güvenlik sınırı ve modlar
+- Her denetim sayfasında “Kapsam” notu: tavan ve kurallar yalnızca geçitten geçen emirlere uygulanır.
+- Üç mod ayrı adlandırıldı: Çevrimdışı prova · Gerçek fiyat · sahte emir · OKX demo hesabı. Denetim başlığında mod rozeti; canlı yolda her emir cevabının kaynağı (geçit cevabı · borsaya gitmedi / sahte emir defteri / OKX demo hesabı).
+- Sigorta sayfasına kapsam notu.
+
+## Avalanche
+- `contracts/EhliyetRegistry.sol`: değiştirilemez kayıt sözleşmesi (güncelleme/silme yok, aynı özet ikinci kez yazılamaz, yalnızca kurucu cüzdan yazar).
+- `src/chain/`: RPC yedekli istemci, nonce takibi + tek sıralı gönderim, otomatik kayıt, açılışta bekleyenleri yazma, zincirden doğrulama.
+- `npm run avalanche:setup` (cüzdan → bakiye → sözleşme → .env), `avalanche:status`, `avalanche:compile`, `test:chain`.
+- Site: üst çubukta Avalanche durumu, ana sayfada Avalanche şeridi, sıralamada zincir simgesi, ehliyet sekmesinde kayıt paneli (“Zincirde doğrula”, “Snowtrace'te aç”, “Yeniden dene”), ehliyet kartında Avalanche işareti ve blok numarası, canlı yolda kayıt olayları, kayıtlı kopyada kopya anındaki doğrulama.
+
+## Düzeltilen hatalar
+- `.env`'de boş bırakılan değer (`EHLIYET_PORT=` gibi) 0 sayılıyordu; artık varsayılana düşer.
+- Zincir yazımında eski nonce hatası (düğüm işlemden hemen sonra eski sayıyı döndürüyordu): yerel nonce takibi ve tek yeniden deneme.
+- Toplu (batch) RPC istekleri bazı düğümlerde bozuk cevap veriyordu: kapatıldı.
+- `test/llm-paths.ts` projenin gerçek `data/` klasörüne yazıyordu ve tempo kapanmıyordu: geçici klasör, doğru sıra.
+- Mobilde ana sayfa 18 px taşıyordu (arka plan ışığı): düzeltildi.
+- Avalanche kapalıyken ana sayfa “kayıtlı” diyordu: metinler gerçek duruma bağlandı.
+
+## Doğrulananlar
+- `npm test`, `npm run typecheck`, hibrit düşüş testi, sahte Anthropic ile LLM yolu.
+- `npm run test:chain` yerel EVM'de art arda 7 kez 9/9: sözleşme kurulumu, otomatik kayıt, kanıt zincirinde kayıt olayı, zincirden doğrulama, puanı değiştirilmiş sahte ehliyetin yakalanması, aynı ehliyetin ikinci kez yazılamaması, başka cüzdanın yazamaması, tekrar istekte yeni işlem gönderilmemesi.
+- Kurulum betiği: boş cüzdan (musluk talimatı), dolu cüzdan (sözleşme kurulumu), tekrar çalıştırma, durum; gerçek Fuji ağına bağlantı ve bakiye okuma.
+- Tarayıcı: 36 sayfa durumu (1440 px) ve ana sayfalar (375 px), JS hatası ve taşma yok; Avalanche açık ve kapalı hâller; canlı sınavda zincir kaydı ve bildirim; kayıtlı kopyada zincir paneli.
+
+## Henüz denenmedi
+- Gerçek Fuji ağına yazma: test AVAX gerektirir (musluk insan doğrulaması istiyor). Adımlar CANLI-TEST.md'de.

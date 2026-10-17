@@ -149,7 +149,9 @@ async function renderSalon(refreshOnly = false) {
       <div>
         <div class="eyebrow">OKX Agent Trade Kit ajanları için</div>
         <h1>Ajanınıza anahtarınızı vermeden önce ehliyetine bakın.</h1>
-        <p class="lede">EHLİYET bir işlem ajanını belirli bir ayarda 12 tuzaklı sınava sokar, davranışını kanıtıyla değerlendirir ve kısıtlı bir çalıştırma ayarı önerir. Sınav riski sıfırlayamaz, ölçer; kalan riski sigorta fiyatlar. Her ehliyet Avalanche'a yazılır.</p>
+        <p class="lede">EHLİYET bir işlem ajanını belirli bir ayarda 12 tuzaklı sınava sokar, davranışını kanıtıyla değerlendirir ve kısıtlı bir çalıştırma ayarı önerir. Sınav riski sıfırlayamaz, ölçer; kalan riski sigorta fiyatlar.${
+          ctx.health?.chain?.ready || isSnapshot() ? " Her ehliyet Avalanche'a yazılır." : ""
+        }</p>
         <div class="actions">${isSnapshot() ? "" : `<a class="btn btn-primary btn-lg" href="#/yeni">Ajanı sınava sok</a>`}<a class="btn btn-lg" href="#/yontem">Nasıl çalışır</a></div>
       </div>
       <div class="kpis">
@@ -187,7 +189,8 @@ async function renderSalon(refreshOnly = false) {
 
   const ch = ctx.health?.chain;
   const anchored = board.filter((r) => r.chain?.status === "confirmed").length;
-  const avaxStrip = `<section class="avax-strip">${AVAX(30)}<div><b>Ehliyetler Avalanche'ta kayıtlı</b><span>${
+  const chainOn = ch?.ready || (isSnapshot() && anchored > 0);
+  const avaxStrip = `<section class="avax-strip">${AVAX(30)}<div><b>${chainOn ? "Ehliyetler Avalanche'ta kayıtlı" : "Avalanche kaydı kapalı"}</b><span>${
     ch?.ready
       ? `Her ehliyetin özeti Avalanche C-Chain'deki kayıt sözleşmesine bir kez yazılır; değiştirilemez, silinemez. ${anchored}/${board.length} ehliyet zincirde.`
       : isSnapshot()

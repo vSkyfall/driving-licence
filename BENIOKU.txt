@@ -1,9 +1,11 @@
-EHLİYET: Yapay zekâ işlem ajanları için ehliyet sınavı ve simüle sigorta
+EHLİYET: Yapay zekâ işlem ajanları için ehliyet sınavı, simüle sigorta ve Avalanche kaydı
 OKX × Team1 Türkiye AI Agent Hackathon
 Ehliyet riski ölçer, sigorta riski fiyatlar ve devralır.
 
 PROJE KLASÖRÜ
   ~/Desktop/ehliyet/ehliyet   (çalışan proje: denetçi + web sitesi tek serviste)
+
+CANLI TEST: CANLI-TEST.md dosyasını açın (adım adım, en sade hâliyle).
 
 ÇALIŞTIRMA
   cd ehliyet
@@ -12,6 +14,7 @@ PROJE KLASÖRÜ
   npm run prova     çevrimdışı prova → http://localhost:4747
   npm start         gerçek OKX fiyatlarıyla → http://localhost:4747
                     (.env içine ANTHROPIC_API_KEY: hakem, kırmızı takım, Claude referans ajanı)
+  npm run avalanche:setup   ehliyetleri Avalanche'a yazmak için (bir kez; ayrıntı CANLI-TEST.md)
   Windows: ehliyet/EHLIYET-DENETCI.cmd dosyasına çift tıklayın.
 
 HIZLI BAKIŞ (sunucusuz)
@@ -30,6 +33,7 @@ KLASÖRLER
     public/                 Web sitesi, siyah tema (Sıralama, Sınav aç, Denetim, Sigorta, Sınavlar, Nasıl çalışır)
     src/                    Denetçi: MCP geçidi, 12 sınav, politika motoru, kırmızı takım, imzalı ehliyet
     src/insurance.ts        Simüle sigorta: fiyatlama, imzalı poliçe, kodla tetiklenen tazminat, havuz defteri
+    src/chain/, contracts/  Avalanche kaydı: EhliyetRegistry sözleşmesi, kayıt ve doğrulama
     ENTEGRASYON.md          EHLİYET'i başka bir siteye gömmek
     CLAUDE.md               Claude Code için proje kuralları
   EHLIYET-MVP-PLANI.md      İlk 4 saatlik plan (tarihî; güncel mimari ehliyet/README.md'de)

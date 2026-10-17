@@ -2,7 +2,9 @@
 
 > Araba kullanmak için ehliyet şart. Paranızı yöneten yapay zekâ ise ehliyetsiz direksiyonda.
 
-EHLİYET, OKX Agent Trade Kit (ATK) kullanan yapay zekâ işlem ajanlarını sınava sokar. Ajan OKX araçlarına doğrudan değil EHLİYET'in geçidi üzerinden bağlanır. Sınav görevlisi ajana kullanıcı gibi 12 tuzaklı istek yazar ve her araç çağrısını borsaya gitmeden önce denetler. Sonunda ajan **Ed25519 ile imzalı bir ehliyet** alır. Ehliyetin sınıfı doğrudan ATK'nin kendi yetki ayarına çevrilir (`--read-only`, `--profile`, `--modules`).
+EHLİYET, OKX Agent Trade Kit (ATK) kullanan yapay zekâ işlem ajanlarını sınava sokar. Ajan OKX araçlarına doğrudan değil EHLİYET'in geçidi üzerinden bağlanır. Sınav görevlisi ajana kullanıcı gibi 12 tuzaklı istek yazar ve her araç çağrısını borsaya gitmeden önce denetler. Sonunda ajan **Ed25519 ile imzalı bir ehliyet** alır; ehliyetin özeti **Avalanche C-Chain'e yazılır** ve değiştirilemez. Ehliyetin sınıfı ATK'nin kendi yetki ayarına çevrilir (`--read-only`, `--profile`, `--modules`).
+
+**Ehliyet ajanı güvenli kılmaz.** Belirli bir ayarda ve belirli sınav koşullarında ajanın davranışını değerlendirir ve kısıtlı bir çalıştırma ayarı önerir (ayrıntı: [Ehliyet neyi garanti eder](#ehliyet-neyi-garanti-eder)).
 
 **Ehliyet riski ölçer, sigorta riski fiyatlar ve devralır.** 1.000 sınavı temiz geçen ajan bile 1.001'incide kaza yapabilir; sınav riski sıfırlayamaz. Bu yüzden ehliyet alan ajana, sınavın istatistiğinden fiyatlanmış **simüle bir poliçe** düzenlenir. Tazminatı dil modeli değil, politika motorunun kodla tespit ettiği kural ihlali tetikler (ayrıntı: [Sigorta](#sigorta-simüle)).
 
@@ -25,6 +27,17 @@ npm start            # http://localhost:4747 (varsayılan borsa: gerçek OKX fiy
 
 Windows'ta `EHLIYET-DENETCI.cmd` (canlı) ya da `EHLIYET-DENETCI-PROVA.cmd` (çevrimdışı) dosyasına çift tıklayın.
 
+Bir tam sınav (12 sınav) yaklaşık **36 saniye** sürer: her sınav en az 3 saniye akar, böylece canlı yol okunabilir kalır. `EHLIYET_PACE_MS` ile değişir (0 = beklemesiz).
+
+Ehliyetleri Avalanche'a yazmak için (Fuji test ağı, tek komut, tekrar çalıştırılabilir):
+
+```bash
+npm run avalanche:setup   # cüzdan oluşturur → test AVAX ister → sözleşmeyi kurar → .env'e yazar
+npm run avalanche:status  # ağ, cüzdan, bakiye, sözleşme, kayıt sayısı
+```
+
+Adım adım canlı test rehberi: **[../CANLI-TEST.md](../CANLI-TEST.md)**.
+
 Gerçek OKX demo hesabıyla sınav için `~/.okx/config.toml` içinde `demo` profili tanımlayın ve `.env` içine `EHLIYET_UPSTREAM=atk` yazın.
 
 ## Site
@@ -41,6 +54,33 @@ Tek tema: siyah (OKX benzeri). Renk yalnızca anlam taşır: yeşil geçti/öden
 | **Nasıl çalışır** (`#/yontem`) | Mimari, ATK'nin nerede kullanıldığı, puanlama, sigorta, kanıt ve imza, ajanınızı bağlama (MCP adresi, sohbet ucu biçimi, başka siteye gömme), dürüstlük notları, kaynaklar. |
 
 **Kayıtlı kopya:** `npm run export` bitmiş denetimleri tek bir HTML dosyasına gömer (`dist/ehliyet-site.html`). Dosya sunucusuz açılır, salt okunurdur, üstünde tarihiyle “kayıtlı kopya” yazar. Denetim jetonları ve MCP adresleri kopyaya yazılmaz. Sunum yedeği ve jüriye gönderim içindir.
+
+## Ehliyet neyi garanti eder
+
+| | |
+|---|---|
+| **Gösterir** | Bu model, bu talimat ve bu araç listesiyle (parmak izi) ajanın 12 sınavda nasıl davrandığını; her kararı kanıtıyla. |
+| **Önerir** | Bu davranışa göre ajanın hangi ATK ayarıyla, ne kadar kısıtlı çalıştırılması gerektiğini. |
+| **Garanti etmez** | Ajanın sınavda olmayan durumlarda ne yapacağını. Model, talimat ya da araçlar değişirse ehliyet geçersizdir. |
+
+**Önerilen ayar nasıl uygulanır:** ATK önerilen bayraklarla (ör. `--read-only --modules market`) başlatılırsa ajana yalnızca izin verilen araçlar görünür; bu kısıtı ATK uygular. Ajan EHLİYET geçidine bağlıysa tavan ve kurallar her emirde uygulanır. **Kendiliğinden uygulanmaz:** ajanın elinde doğrudan bir OKX anahtarı ya da başka bir araç sunucusu varsa ehliyet onu durdurmaz. Sunumda “ajanı güvenli kılıyor” değil, “belirli bir ayar ve sınav koşulunda davranışını değerlendirip kısıtlı çalıştırma ayarı öneriyor” deyin.
+
+## Güvenlik sınırı
+
+$200 tavanı (`EHLIYET_MAX_NOTIONAL`) ve politika kuralları **yalnızca EHLİYET geçidinden geçen emirlere** uygulanır. Ajan başka bir yoldan (kendi API anahtarı, başka bir MCP sunucusu) borsaya erişebiliyorsa bu trafik geçitten geçmez: kayda girmez, tavana takılmaz, sigorta kapsamına girmez. Sitede her denetim sayfasında bu sınır yazar.
+
+## Avalanche kaydı
+
+Her ehliyet imzalandıktan sonra özeti Avalanche C-Chain'deki `EhliyetRegistry` sözleşmesine yazılır ([contracts/EhliyetRegistry.sol](contracts/EhliyetRegistry.sol)).
+
+- **Özet:** imzalı ehliyetin tamamının keccak256'sı. Ehliyette tek harf değişirse zincirdeki kayıtla eşleşmez.
+- **Değiştirilemez:** sözleşmede güncelleme ya da silme yok; aynı özet ikinci kez yazılamaz.
+- **Sahte kayıt yok:** kaydı yalnızca sözleşmeyi kuran EHLİYET cüzdanı ekleyebilir; okumak herkese açık.
+- **Zincirde:** özet, ehliyet no, sınıf, puan, kanıt zinciri özeti, zaman. Konuşmalar ve kişisel veri zincire yazılmaz.
+- **Doğrulama:** ehliyet sekmesindeki “Zincirde doğrula” kaydı doğrudan Avalanche'tan okur; işlem Snowtrace'te herkese açık.
+- Kayıt sınav bitince arka planda yapılır; yazılmamış ehliyetler sunucu açılışında yazılır. Ağ: `EHLIYET_CHAIN=fuji` (kurulumun varsayılanı) · `mainnet` · `local` · `off`.
+
+Uçlar: `GET /v1/chain`, `GET /v1/licenses/:id/chain` (zincirden doğrulama), `POST /v1/licenses/:id/anchor` (yeniden dene). Test: `npm run test:chain` (yerel bir EVM'e karşı: kurulum, kayıt, doğrulama, sahte ehliyet, değiştirilemezlik).
 
 ## Sunum akışı
 
@@ -101,11 +141,13 @@ Uçlar: `GET /v1/insurance` (havuz, defter, poliçeler), `GET /v1/policies/:id`,
 
 ## Borsa modları
 
-| Mod | Ne kullanır | Ne zaman |
-|---|---|---|
-| `hybrid` (varsayılan) | Gerçek OKX fiyatları ve kontrat değerleri (ATK, anahtarsız), her denetime ayrı sahte emir defteri | Anahtar gerekmez, denetimler paralel koşar, rakamlar gerçek. OKX'e ulaşılamazsa kendiliğinden `mock`a düşer. |
-| `atk` | Gerçek ATK, `--profile demo`. Emirler gerçek demo hesaba gider. | En inandırıcı demo. Tek hesap paylaşıldığı için denetimler sıraya girer. |
-| `mock` | Tamamen çevrimdışı | Prova |
+| Mod | Sitedeki adı | Fiyatlar | Emirler nereye gider | Para |
+|---|---|---|---|---|
+| `mock` | Çevrimdışı prova | Sabit örnek | Sahte emir defteri | Yok |
+| `hybrid` (varsayılan) | Gerçek fiyat · sahte emir | OKX'ten canlı (ATK, anahtarsız) | Sahte emir defteri; OKX'e emir gitmez | Yok |
+| `atk` | OKX demo hesabı | OKX'ten canlı | OKX'in demo hesabı (ATK `--profile demo`) | Sanal para |
+
+Hiçbir modda gerçek parayla işlem yapılmaz. Her denetim sayfasının başında mod yazar; canlı yolda her emir cevabının nereden geldiği (geçit / sahte defter / OKX demo) işaretlidir. `hybrid` OKX'e ulaşamazsa kendiliğinden `mock`a düşer. `atk` modunda tek hesap paylaşıldığı için denetimler sıraya girer.
 
 $200 (`EHLIYET_MAX_NOTIONAL`) üzerindeki emir, tuzak dahil hiçbir yoldan borsaya gönderilmez. Not, ajanın denediği emre göre verilir.
 
@@ -130,6 +172,9 @@ src/candidates/   aday bağdaştırıcıları (http, manual, claude, script) ve 
 src/api/          REST + SSE + OpenAPI; site dosyalarını da yayınlar
 src/license.ts    puan, sınıf, Ed25519 imza, kart ve rozet SVG
 src/insurance.ts  simüle sigorta: fiyatlama, poliçe, tetik, havuz defteri, poliçe kartı SVG
+src/chain/        Avalanche: istemci (RPC, kayıt, doğrulama, nonce), açılışta bekleyenleri yazma, logo
+contracts/        EhliyetRegistry.sol (derlenmiş hâli src/chain/EhliyetRegistry.json; yeniden: npm run avalanche:compile)
+scripts/          export.ts (kayıtlı kopya), avalanche.ts (kurulum/durum), compile-contract.ts
 scripts/export.ts tek dosyalık kayıtlı kopya
 examples/         örnek yarışmacı ajanı (uzaktan bağlanma), örnek host sitesi
 test/             kurulum testi, sahte Anthropic ile LLM yolu testleri

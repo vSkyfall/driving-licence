@@ -2362,7 +2362,7 @@ textarea {
 .hero::before {
   content: "";
   position: absolute;
-  inset: -80px -10% auto 30%;
+  inset: -80px 0 auto 25%;
   height: 420px;
   background: radial-gradient(closest-side, rgba(255, 255, 255, 0.06), transparent);
   pointer-events: none;

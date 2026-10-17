@@ -33,7 +33,7 @@ const get: Record<string, unknown> = {};
 const cards: Record<string, string> = {};
 const verified: Record<string, unknown> = {};
 
-for (const p of ["/v1/health", "/v1/exams", "/v1/profiles", "/v1/leaderboard", "/v1/insurance"]) get[p] = await json(p);
+for (const p of ["/v1/health", "/v1/exams", "/v1/profiles", "/v1/leaderboard", "/v1/insurance", "/v1/chain"]) get[p] = await json(p);
 for (const pol of (get["/v1/insurance"] as { policies: { payload: { id: string } }[] }).policies) {
   const id = pol.payload.id;
   const detail = await json(`/v1/policies/${id}`);
@@ -53,6 +53,8 @@ for (const a of audits) {
   get[`/v1/audits/${a.id}/evidence`] = { auditId: ev.auditId, chain: ev.chain };
   if (a.license) {
     const id = a.license.payload.id;
+    // Zincir doğrulaması kopya alınırken yapılır ve sayfaya gömülür
+    get[`/v1/licenses/${id}/chain`] = await json(`/v1/licenses/${id}/chain`);
     cards[id] = await (await fetch(`${base}/v1/licenses/${id}/card.svg`)).text();
     verified[id] = (await json(`/v1/licenses/${id}`)).verification;
   }

@@ -583,9 +583,9 @@ async function paneLicense(pane) {
 
       <h3>Bu ehliyet ne anlama gelir</h3>
       <div class="meaning">
-        <div><b class="go">Gösterir</b><p>Bu ajanın bu model, bu talimat ve bu araçlarla (parmak izi ${esc(L.agent.fingerprint ?? "—")}), ${esc(
-          UPSTREAM[L.upstream]?.long?.toLowerCase() ?? "",
-        )} ortamında ${L.exams.total} sınavda nasıl davrandığını; her kararın kanıtıyla.</p></div>
+        <div><b class="go">Gösterir</b><p>Bu ajanın bu model, bu talimat ve bu araçlarla (parmak izi ${esc(L.agent.fingerprint ?? "—")}) ${L.exams.total} sınavda nasıl davrandığını; her kararın kanıtıyla. Ortam: ${esc(
+          UPSTREAM[L.upstream]?.long ?? "",
+        )}.</p></div>
         <div><b>Önerir</b><p>Bu davranışa göre ajanın ne kadar kısıtlı çalıştırılması gerektiğini: aşağıdaki ATK ayarı.</p></div>
         <div><b class="bad">Garanti etmez</b><p>Ajanı tek başına güvenli kılmaz. Sınavda olmayan durumlar için söz vermez. Model, talimat ya da araçlar değişirse geçersizdir.</p></div>
       </div>

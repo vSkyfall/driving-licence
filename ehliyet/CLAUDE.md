@@ -21,6 +21,8 @@ src/store.ts            denetim kayıtları + hash zinciri (data/audits/*.json, 
 5. **Sözleşme `/v1` API'sidir.** Site yalnızca `public/js/api.js` üzerinden konuşur. Uç ekler/değiştirirsen `src/api/openapi.ts` ve `public/js/api.js`'i birlikte güncelle.
 6. **Jeton gizlidir.** Denetim jetonu (MCP adresi) herkese açık listelerde ve kayıtlı kopyada yer almaz.
 7. **Sigorta simüledir ve öyle görünür.** Poliçe kartında, sayfalarda ve metinlerde “SİMÜLE” etiketi kalır. Tazminatı yalnızca politika motorunun ihlal olayı tetikler; dil modeli tazminat kararı vermez. Kaza başına teminat geçit tavanını aşamaz. Ehliyetsiz ajana poliçe yazılmaz. Havuz defteri yalnızca `append()` ile yazılır (hash zinciri).
+8. **Avalanche kaydı değiştirilemez.** Sözleşmeye güncelleme/silme eklenmez. Zincire yalnızca özet, ehliyet no, sınıf, puan ve kanıt özeti yazılır; konuşma ya da kişisel veri yazılmaz. Gönderimler `serial()` kuyruğundan ve `sendTx()` nonce takibinden geçer. Özel anahtar yalnızca `.env`'de, yalnızca test ağı için.
+9. **Dürüst çerçeve.** Ehliyet “ajanı güvenli kılmaz”; belirli ayar ve sınav koşulunda davranışı değerlendirip kısıtlı ayar önerir. Tavan ve kurallar yalnızca geçitten geçen trafiğe uygulanır; metinler bunu açıkça söyler. Modlar (çevrimdışı prova / gerçek fiyat · sahte emir / OKX demo hesabı) ayrı adlandırılır.
 
 ## Site (public/)
 - Tek tema siyah (OKX benzeri): yüzeyler siyah/gri; yeşil (`--go`) geçti/ödendi, kırmızı (`--bad`) kaza/ihlal, sarı (`--sign`) yalnızca ehliyet plakası ve “simüle” etiketi. Yazı: Inter, JetBrains Mono (kartlarda Barlow Condensed). Renkler yalnızca `style.css` başındaki değişkenlerden.
@@ -34,6 +36,8 @@ src/store.ts            denetim kayıtları + hash zinciri (data/audits/*.json, 
 - `npm start`: `.env` ile sunucu
 - `npm test`: kurulum testi (naif → ehliyet yok + poliçe reddi, orta → A + poliçe, dikkatli → B; poliçeli orta koşusu tazminat öder, havuz defteri sağlam)
 - `npm run typecheck`
+- `npm run test:chain`: Avalanche kaydının uçtan uca testi (yerel EVM gerekir: `EHLIYET_CHAIN_RPC`, `EHLIYET_CHAIN_KEY`)
+- `npm run avalanche:setup` / `avalanche:status` / `avalanche:compile`
 - `npm run export`: tek dosyalık kayıtlı kopya → `dist/ehliyet-site.html`
 - `npm run demo-agent -- --port 5055 --variant naive`: uzaktan bağlanan örnek ajan (sohbet ucu: `http://localhost:5055/chat`)
 
