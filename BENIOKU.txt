@@ -39,3 +39,4 @@ KLASÖRLER
   EHLIYET-MVP-PLANI.md      İlk 4 saatlik plan (tarihî; güncel mimari ehliyet/README.md'de)
   SAGLAMA-RAPOR.md          İlk araştırma raporu
   arsiv/ehliyet-starter/    Birleştirmeden önceki site başlangıcı. Yerini ehliyet/ aldı; silinebilir.
+cd ~/Desktop/ehliyet/ehliyet && npm start
