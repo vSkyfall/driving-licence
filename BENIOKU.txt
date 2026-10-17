@@ -2,6 +2,12 @@ EHLİYET: Yapay zekâ işlem ajanları için ehliyet sınavı, simüle sigorta v
 OKX × Team1 Türkiye AI Agent Hackathon
 Ehliyet riski ölçer, sigorta riski fiyatlar ve devralır.
 
+
+Sözleşme: 0x86bc7762F6cdD659175123bDb633D0DbA083995d
+Ağ: Avalanche Fuji (test ağı, zincir 43113)
+Sahibi: 0xB1e9dc6ECdFa398dD623bA9c26380Eea5118652e
+
+
 PROJE KLASÖRÜ
   ~/Desktop/ehliyet/ehliyet   (çalışan proje: denetçi + web sitesi tek serviste)
 
