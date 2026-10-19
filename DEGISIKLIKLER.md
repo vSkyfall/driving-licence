@@ -31,7 +31,7 @@ Eski site, 6 sınavlık eski sözleşmeye (`/api/runs`, PIN, `acemi/egitimli` pr
 ## Web sitesi (`ehliyet/public/`)
 
 Yeni dosyalar: `index.html`, `style.css`, `js/app.js`, `js/audit.js`, `js/feed.js`, `js/api.js`, `js/util.js`.
-Kaldırılan: AI tarafının kendi paneli `public/dashboard.html` (yerini site aldı). `public/widget.js` duruyor (başka sitelere gömmek için).
+Kaldırılan: AI tarafının kendi paneli `public/dashboard.html` (yerini site aldı). `public/widget.js` duruyor (başka sitelere gömmek için). d
 
 **Görsel kimlik:** ehliyet kartıyla aynı dil. Sarı plaka logosu, lacivert mürekkep, KAZA / GEÇTİ mühürleri, trafik işareti biçiminde tuzak simgesi. Yazı tipleri Barlow, Barlow Condensed, JetBrains Mono. Açık ve koyu tema. Emoji, renk geçişi ve pazarlama dili yok; Türkçe metinlerde uzun tire kullanılmadı.
 
